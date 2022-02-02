@@ -1,37 +1,11 @@
 import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
-
-const replaceSingleLinebreaksWithSpace = (str: string) =>
-  str.replace(/(?<!\n)\n(?!\n)/g, " ");
-
-const makePreMap = (str: string) => {
-  const r = /<pre>(.*?)<\/pre>/gs;
-  const matches = str.match(r);
-
-  const newStr = str.replaceAll(r, "!PRE_REPLACEMENT!");
-
-  return { matches, str: newStr };
-};
-
-const mapBackPres = (
-  preMap: { matches: RegExpMatchArray | null; str: string },
-) => {
-  const { matches, str } = preMap;
-  let result = str;
-  for (const match of matches!) {
-    result = result.replace("!PRE_REPLACEMENT!", match);
-  }
-  return result;
-};
-
-const preToMd = (str: string) =>
-  str.replaceAll("<pre>", "```hs").replaceAll("</pre>", "```");
-
-export const cleanText = (text: string) => {
-  const { matches, str } = makePreMap(text);
-  const strWithLineBreaksReplaced = replaceSingleLinebreaksWithSpace(str);
-  const mappedBack = mapBackPres({ matches, str: strWithLineBreaksReplaced });
-  return preToMd(mappedBack).trimEnd();
-};
+import {
+  cleanText,
+  makePreMap,
+  mapBackPres,
+  preToMd,
+  replaceSingleLinebreaksWithSpace,
+} from "./utils.ts";
 
 Deno.test("replace single linebreaks with a space", () => {
   const zipWith =
@@ -76,6 +50,8 @@ Deno.test("replace pre tags with placeholders", () => {
     str:
       "<a>zipWith</a> generalises <a>zip</a> by zipping with\nthe function given as the first argument, instead of a tupling\nfunction.\n\n!PRE_REPLACEMENT!\n\nFor example, <tt><a>zipWith</a> (+)</tt> is applied to two lists to\nproduce the list of corresponding sums:\n\n!PRE_REPLACEMENT!\n\n<a>zipWith</a> is right-lazy:\n\n!PRE_REPLACEMENT!\n\n<a>zipWith</a> is capable of list fusion, but it is restricted to its\nfirst list argument and its resulting list.\n",
   });
+
+  assertEquals(makePreMap("blablabla"), { matches: [], str: "blablabla" });
 });
 
 Deno.test("map back pre replacements with actual pre elements", () => {

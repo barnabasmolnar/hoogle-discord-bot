@@ -1,5 +1,5 @@
 import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
-import { cleanText } from "./utils.test.ts";
+import { cleanText } from "./utils.ts";
 
 const zipWithJSONResponse = {
   "docs":
@@ -23,4 +23,8 @@ const doc = new DOMParser().parseFromString(
   "text/html",
 )!;
 console.log(doc.textContent);
-// console.log(cleanText(zipWith.docs));
+const item = new DOMParser().parseFromString(
+  cleanText(zipWithJSONResponse.item),
+  "text/html",
+)!;
+console.log(item.textContent);

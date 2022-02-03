@@ -4,35 +4,8 @@ import {
   assertRejects,
 } from "https://deno.land/std/testing/asserts.ts";
 import * as yup from "https://esm.sh/yup";
-import { hoogleSchema, validateSchema } from "./validation.test.ts";
+import { getHoogleJSON, hoogleAPI, requestJSON } from "./api.ts";
 import { mapResults, mapResultsStripped } from "./mockData.ts";
-
-const noValidation = yup
-  .mixed()
-  .test("no-validation", "no validation", () => true);
-
-const requestJSON = async (
-  resource: string,
-  schema = noValidation,
-  options?: RequestInit,
-) => {
-  const r = await fetch(resource, options);
-  if (!r.ok) {
-    throw new Error(r.statusText, {
-      cause: {
-        status: r.status,
-        message: r.statusText,
-      },
-    });
-  }
-  const json = await r.json();
-  return await validateSchema(schema, json);
-};
-
-const hoogleAPI = "https://hoogle.haskell.org?mode=json&hoogle";
-
-const getHoogleJSON = (searchTerm: string, hoogleOptions = "start=1&count=2") =>
-  requestJSON(`${hoogleAPI}=${searchTerm}&${hoogleOptions}`, hoogleSchema);
 
 const mockFetchHelper = async (
   requestURL: string,
@@ -50,11 +23,11 @@ const mockFetchHelper = async (
   return await mockFetch(request, expectedResponse);
 };
 
+const testURL =
+  "https://hoogle.haskell.org?mode=json&hoogle=map&start=1&count=2";
+
 Deno.test("returns raw results from api properly", async () => {
-  await mockFetchHelper(
-    "https://hoogle.haskell.org?mode=json&hoogle=map&start=1&count=2",
-    mapResults,
-  );
+  await mockFetchHelper(testURL, mapResults);
 
   const response = await requestJSON(`${hoogleAPI}=map&start=1&count=2`);
 
@@ -64,10 +37,7 @@ Deno.test("returns raw results from api properly", async () => {
 });
 
 Deno.test("returns validated data from api", async () => {
-  await mockFetchHelper(
-    "https://hoogle.haskell.org?mode=json&hoogle=map&start=1&count=2",
-    mapResultsStripped,
-  );
+  await mockFetchHelper(testURL, mapResultsStripped);
 
   const response = await getHoogleJSON("map");
 
@@ -77,10 +47,7 @@ Deno.test("returns validated data from api", async () => {
 });
 
 Deno.test("rejects invalid data with validation error", async () => {
-  await mockFetchHelper(
-    "https://hoogle.haskell.org?mode=json&hoogle=map&start=1&count=2",
-    [{ "this": "will fail for sure" }],
-  );
+  await mockFetchHelper(testURL, [{ "this": "will fail for sure" }]);
 
   assertRejects(() => getHoogleJSON("map"), yup.ValidationError);
 
@@ -88,12 +55,7 @@ Deno.test("rejects invalid data with validation error", async () => {
 });
 
 Deno.test("requestJSON rejects with 400", async () => {
-  await mockFetchHelper(
-    "https://hoogle.haskell.org?mode=json&hoogle=map&start=1&count=2",
-    {},
-    400,
-    "aint gonna work, son",
-  );
+  await mockFetchHelper(testURL, {}, 400, "aint gonna work, son");
 
   assertRejects(
     () => requestJSON(`${hoogleAPI}=map&start=1&count=2`),

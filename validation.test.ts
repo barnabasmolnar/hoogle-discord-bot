@@ -10,20 +10,9 @@ import {
   zipWith,
   zipWithStripped,
 } from "./mockData.ts";
+import { hoogleSchema, itemSchema, validateSchema } from "./validation.ts";
 
-const itemSchema = yup.object().shape({
-  docs: yup.string().required(),
-  item: yup.string().required(),
-  module: yup.object().shape({ name: yup.string().required() }),
-  url: yup.string().url().required(),
-});
-
-export const hoogleSchema = yup.array().of(itemSchema);
-
-export const validateSchema = (schema: yup.BaseSchema, data: unknown) =>
-  schema.validate(data, { stripUnknown: true });
-
-Deno.test("item schema strips unnecessary details", async () => {
+Deno.test("validateSchema strips unnecessary details", async () => {
   const validated = await validateSchema(itemSchema, zipWith);
 
   assertEquals(validated, zipWithStripped);

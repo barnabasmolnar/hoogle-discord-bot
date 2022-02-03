@@ -1,5 +1,11 @@
 # Hoogle discord bot
 
+**This bot is currently under active development. The below is an approximation of how it should work once shipped.**
+
+Further details, improvements, ideas, etc to follow...
+
+---
+
 This applications aims to bring [Hoogle](https://hoogle.haskell.org/), the popular Haskell API search engine, to Discord in the form of a simple bot.
 
 Once invited to your server, example use:

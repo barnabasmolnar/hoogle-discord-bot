@@ -1,9 +1,9 @@
 import * as yup from "https://esm.sh/yup";
 
 export const itemSchema = yup.object().shape({
-  docs: yup.string().required(),
-  item: yup.string().required(),
-  module: yup.object().shape({ name: yup.string().required() }),
+  docs: yup.string().ensure(),
+  item: yup.string().ensure(),
+  module: yup.object().shape({ name: yup.string().ensure() }),
   url: yup.string().url().required(),
 });
 

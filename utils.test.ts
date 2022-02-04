@@ -1,4 +1,5 @@
 import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
+import { superman } from "./mockData.ts";
 import {
   cleanText,
   makePreMap,
@@ -76,7 +77,7 @@ Deno.test("replace pre tags with markdown style code blocks", () => {
 
   assertEquals(
     preToMd(simple),
-    "Yo hello watup ```hs\nim aight bro```. That's so ```hsfrickin' cool brah, yeah```. Here is a\nrandom line break\nand another because why not.\n",
+    "Yo hello watup ```hs\n\nim aight bro```. That's so ```hs\nfrickin' cool brah, yeah```. Here is a\nrandom line break\nand another because why not.\n",
   );
 });
 
@@ -89,11 +90,21 @@ Deno.test("clean docs text", () => {
 
   assertEquals(
     cleanText(simple),
-    "Yo hello watup ```hs\nim aight bro```. That's so ```hsfrickin' cool brah, yeah```. Here is a random line break and another because why not.",
+    "Yo hello watup ```hs\n\nim aight bro```. That's so ```hs\nfrickin' cool brah, yeah```. Here is a random line break and another because why not.",
   );
 
   assertEquals(
     cleanText(zipWith),
-    "<a>zipWith</a> generalises <a>zip</a> by zipping with the function given as the first argument, instead of a tupling function.\n\n```hs\nzipWith (,) xs ys == zip xs ys\nzipWith f [x1,x2,x3..] [y1,y2,y3..] == [f x1 y1, f x2 y2, f x3 y3..]\n```\n\nFor example, <tt><a>zipWith</a> (+)</tt> is applied to two lists to produce the list of corresponding sums:\n\n```hs\n&gt;&gt;&gt; zipWith (+) [1, 2, 3] [4, 5, 6]\n[5,7,9]\n```\n\n<a>zipWith</a> is right-lazy:\n\n```hs\n&gt;&gt;&gt; let f = undefined\n\n&gt;&gt;&gt; zipWith f [] undefined\n[]\n```\n\n<a>zipWith</a> is capable of list fusion, but it is restricted to its first list argument and its resulting list.",
+    "<a>zipWith</a> generalises <a>zip</a> by zipping with the function given as the first argument, instead of a tupling function.\n\n```hs\n\nzipWith (,) xs ys == zip xs ys\nzipWith f [x1,x2,x3..] [y1,y2,y3..] == [f x1 y1, f x2 y2, f x3 y3..]\n```\n\nFor example, <tt><a>zipWith</a> (+)</tt> is applied to two lists to produce the list of corresponding sums:\n\n```hs\n\n&gt;&gt;&gt; zipWith (+) [1, 2, 3] [4, 5, 6]\n[5,7,9]\n```\n\n<a>zipWith</a> is right-lazy:\n\n```hs\n\n&gt;&gt;&gt; let f = undefined\n\n&gt;&gt;&gt; zipWith f [] undefined\n[]\n```\n\n<a>zipWith</a> is capable of list fusion, but it is restricted to its first list argument and its resulting list.",
+  );
+});
+
+Deno.test("mapBackPres (mapping back pre replacements function) handles special characters such as superman <$> aka infix fmap correctly", () => {
+  const preMapped = makePreMap(superman);
+  const mappedBackPres = mapBackPres(preMapped);
+
+  assertEquals(
+    mappedBackPres,
+    "I call infix fmap superman... Doesn't it look like that? Be honest.\n\n<pre>\n&gt;&gt;&gt; mkState :: Applicative f =&gt; f MyState\n\n&gt;&gt;&gt; mkState = MyState &lt;$&gt; produceFoo &lt;*&gt; produceBar &lt;*&gt; produceBaz\n</pre>",
   );
 });

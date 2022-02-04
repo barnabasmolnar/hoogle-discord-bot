@@ -75,3 +75,24 @@ export const mapResultsStripped = [{
   "module": { "name": "Data.List" },
   "url": "https://hackage.haskell.org/package/base/docs/Data-List.html#v:map",
 }];
+
+export const seqAppl = {
+  "docs":
+    "Sequential application.\n\nA few functors support an implementation of <a>&lt;*&gt;</a> that is\nmore efficient than the default one.\n\n<h4><b>Example</b></h4>\n\nUsed in combination with <tt>(<tt>&lt;$&gt;</tt>)</tt>,\n<tt>(<a>&lt;*&gt;</a>)</tt> can be used to build a record.\n\n<pre>\n&gt;&gt;&gt; data MyState = MyState {arg1 :: Foo, arg2 :: Bar, arg3 :: Baz}\n</pre>\n\n<pre>\n&gt;&gt;&gt; produceFoo :: Applicative f =&gt; f Foo\n</pre>\n\n<pre>\n&gt;&gt;&gt; produceBar :: Applicative f =&gt; f Bar\n\n&gt;&gt;&gt; produceBaz :: Applicative f =&gt; f Baz\n</pre>\n\n<pre>\n&gt;&gt;&gt; mkState :: Applicative f =&gt; f MyState\n\n&gt;&gt;&gt; mkState = MyState &lt;$&gt; produceFoo &lt;*&gt; produceBar &lt;*&gt; produceBaz\n</pre>\n",
+  "item":
+    "<span class=name>(<s0>&lt;*&gt;</s0>)</span> :: Applicative f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b",
+  "module": {
+    "name": "Prelude",
+    "url": "https://hackage.haskell.org/package/base/docs/Prelude.html",
+  },
+  "package": {
+    "name": "base",
+    "url": "https://hackage.haskell.org/package/base",
+  },
+  "type": "",
+  "url":
+    "https://hackage.haskell.org/package/base/docs/Prelude.html#v:-60--42--62-",
+};
+
+export const superman =
+  "I call infix fmap superman... Doesn't it look like that? Be honest.\n\n<pre>\n&gt;&gt;&gt; mkState :: Applicative f =&gt; f MyState\n\n&gt;&gt;&gt; mkState = MyState &lt;$&gt; produceFoo &lt;*&gt; produceBar &lt;*&gt; produceBaz\n</pre>";

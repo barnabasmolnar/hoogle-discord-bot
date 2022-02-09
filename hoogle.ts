@@ -9,9 +9,7 @@ import {
 // TweetNaCl is a cryptography library that we use to verify requests
 // from Discord.
 import nacl from "https://cdn.skypack.dev/tweetnacl@v1.0.3?dts";
-import { getHoogleJSON } from "./api.ts";
-import { cleanText } from "./utils.ts";
-import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
+import { prepareBotResponse } from "./prepareBotResponse.ts";
 
 // For all requests to "/" endpoint, we want to invoke home() handler.
 serve({
@@ -56,31 +54,11 @@ async function home(request: Request) {
   // Type 2 in a request is an ApplicationCommand interaction.
   // It implies that a user has issued a command.
   if (type === 2) {
-    const { value } = data.options.find((option: any) =>
+    const { value } = data.options.find((option: { name: string }) =>
       option.name === "function"
     );
 
-    // Obviously this is just for a quick test
-    // it will be cleaned up in short order
-    // TODO
-    // don't forget to actually clean it up ;)
-    const apiResponse = await getHoogleJSON(value);
-    const rawStr = cleanText(
-      apiResponse[0]?.docs ??
-        `Could not find anything on hoogle with the name of ${value}`,
-    );
-
-    const { textContent: content } = new DOMParser().parseFromString(
-      rawStr,
-      "text/html",
-    )!;
-
-    return json({
-      // Type 4 responds with the below message retaining the user's
-      // input at the top.
-      type: 4,
-      data: { content },
-    });
+    return prepareBotResponse(value);
   }
 
   // We will return a bad request error as a valid Discord request

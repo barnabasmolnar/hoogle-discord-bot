@@ -7,7 +7,7 @@ import * as yup from "https://esm.sh/yup";
 import { getHoogleJSON, hoogleAPI, requestJSON } from "./api.ts";
 import { mapResults, mapResultsStripped } from "./mockData.ts";
 
-const mockFetchHelper = async (
+export const mockFetchHelper = async (
   requestURL: string,
   expectedJSON: unknown,
   status = 200,

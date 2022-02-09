@@ -38,3 +38,10 @@ Deno.test("hoogleSchema returns array of items with itemSchema", async () => {
   const validated = await validateSchema(hoogleSchema, mapResults);
   assertEquals(validated, mapResultsStripped);
 });
+
+Deno.test("hoogleSchema should throw on []", () => {
+  assertRejects(
+    () => validateSchema(hoogleSchema, []),
+    yup.ValidationError,
+  );
+});

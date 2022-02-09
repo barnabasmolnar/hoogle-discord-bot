@@ -7,7 +7,7 @@ export const itemSchema = yup.object().shape({
   url: yup.string().url().required(),
 });
 
-export const hoogleSchema = yup.array().of(itemSchema);
+export const hoogleSchema = yup.array().min(1).of(itemSchema);
 
 export const validateSchema = (schema: yup.BaseSchema, data: unknown) =>
   schema.validate(data, { stripUnknown: true });

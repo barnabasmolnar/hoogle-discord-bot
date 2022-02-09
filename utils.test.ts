@@ -108,3 +108,12 @@ Deno.test("mapBackPres (mapping back pre replacements function) handles special 
     "I call infix fmap superman... Doesn't it look like that? Be honest.\n\n<pre>\n&gt;&gt;&gt; mkState :: Applicative f =&gt; f MyState\n\n&gt;&gt;&gt; mkState = MyState &lt;$&gt; produceFoo &lt;*&gt; produceBar &lt;*&gt; produceBaz\n</pre>",
   );
 });
+
+Deno.test("escape star/asterisk (*) chars (so that markdown will evenutally not treat text within it as italic) ", () => {
+  const testCase =
+    "Sequential application.\n\nA few functors support an implementation of <a>&lt;*&gt;</a> that is\nmore efficient than the default one.\n\n<h4><b>Example</b></h4>\n\nUsed in combination with <tt>(<tt>&lt;$&gt;</tt>)</tt>,\n<tt>(<a>&lt;*&gt;</a>)</tt> can be used to build a record.";
+  const expected =
+    "Sequential application.\n\nA few functors support an implementation of <a>&lt;\\*&gt;</a> that is more efficient than the default one.\n\n<h4><b>Example</b></h4>\n\nUsed in combination with <tt>(<tt>&lt;$&gt;</tt>)</tt>, <tt>(<a>&lt;\\*&gt;</a>)</tt> can be used to build a record.";
+
+  assertEquals(cleanText(testCase), expected);
+});

@@ -32,6 +32,10 @@ export const preToMd = (str: string) =>
 export const cleanText = (text: string) => {
   const { matches, str } = makePreMap(text);
   const strWithLineBreaksReplaced = replaceSingleLinebreaksWithSpace(str);
-  const mappedBack = mapBackPres({ matches, str: strWithLineBreaksReplaced });
+  const strWithStarsEscaped = strWithLineBreaksReplaced.replaceAll("*", "\\*");
+  // ^^ The * character in markdown has a special meaning. Text enclosed in *
+  // characters will appear as italic. Unless escaped, two of these chars can
+  // fuck up rendering quite a bit.
+  const mappedBack = mapBackPres({ matches, str: strWithStarsEscaped });
   return preToMd(mappedBack).trimEnd();
 };

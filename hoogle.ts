@@ -71,7 +71,7 @@ async function home(request: Request) {
     );
 
     const { textContent: content } = new DOMParser().parseFromString(
-      cleanText(rawStr),
+      rawStr,
       "text/html",
     )!;
 

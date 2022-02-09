@@ -23,8 +23,11 @@ const doc = new DOMParser().parseFromString(
   "text/html",
 )!;
 console.log(doc.textContent);
+const block =
+  "Sequential application.\n\nA few functors support an implementation of <a>&lt;\\*&gt;</a> that is more efficient than the default one.\n\n<h4><b>Example</b></h4>\n\nUsed in combination with <tt>(<tt>&lt;$&gt;</tt>)</tt>, <tt>(<a>&lt;\\*&gt;</a>)</tt> can be used to build a record.\n\n```hs\n\n&gt;&gt;&gt; data MyState = MyState {arg1 :: Foo, arg2 :: Bar, arg3 :: Baz}```\n\n```hs\n\n&gt;&gt;&gt; produceFoo :: Applicative f =&gt; f Foo```\n\n```hs\n\n&gt;&gt;&gt; produceBar :: Applicative f =&gt; f Bar\n\n&gt;&gt;&gt; produceBaz :: Applicative f =&gt; f Baz```\n\n```hs\n\n&gt;&gt;&gt; mkState :: Applicative f =&gt; f MyState\n\n&gt;&gt;&gt; mkState = MyState &lt;$&gt; produceFoo &lt;*&gt; produceBar &lt;*&gt; produceBaz```";
+
 const item = new DOMParser().parseFromString(
-  cleanText(zipWithJSONResponse.item),
+  block,
   "text/html",
 )!;
 console.log(item.textContent);

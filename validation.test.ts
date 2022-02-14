@@ -12,36 +12,40 @@ import {
 } from "./mockData.ts";
 import { hoogleSchema, itemSchema, validateSchema } from "./validation.ts";
 
-Deno.test("validateSchema strips unnecessary details", async () => {
-  const validated = await validateSchema(itemSchema, zipWith);
+Deno.test("Validation", async (t) => {
+  await t.step("validateSchema strips unnecessary details", async () => {
+    const validated = await validateSchema(itemSchema, zipWith);
+    assertEquals(validated, zipWithStripped);
+    assertNotEquals(validated, zipWith);
+  });
 
-  assertEquals(validated, zipWithStripped);
-  assertNotEquals(validated, zipWith);
-});
+  await t.step("url is valid", () => {
+    assertRejects(
+      () => validateSchema(itemSchema, { ...zipWith, url: "not a valid url" }),
+      yup.ValidationError,
+    );
+  });
 
-Deno.test("url is valid", () => {
-  assertRejects(
-    () => validateSchema(itemSchema, { ...zipWith, url: "not a valid url" }),
-    yup.ValidationError,
+  await t.step("all required properties exist on object", () => {
+    assertRejects(
+      () => validateSchema(itemSchema, { ...zipWith, url: undefined }),
+      yup.ValidationError,
+      "url is a required field",
+    );
+  });
+
+  await t.step(
+    "hoogleSchema returns array of items with itemSchema",
+    async () => {
+      const validated = await validateSchema(hoogleSchema, mapResults);
+      assertEquals(validated, mapResultsStripped);
+    },
   );
-});
 
-Deno.test("all required properties exist on object", () => {
-  assertRejects(
-    () => validateSchema(itemSchema, { ...zipWith, url: undefined }),
-    yup.ValidationError,
-    "url is a required field",
-  );
-});
-
-Deno.test("hoogleSchema returns array of items with itemSchema", async () => {
-  const validated = await validateSchema(hoogleSchema, mapResults);
-  assertEquals(validated, mapResultsStripped);
-});
-
-Deno.test("hoogleSchema should throw on []", () => {
-  assertRejects(
-    () => validateSchema(hoogleSchema, []),
-    yup.ValidationError,
-  );
+  await t.step("hoogleSchema should throw on []", () => {
+    assertRejects(
+      () => validateSchema(hoogleSchema, []),
+      yup.ValidationError,
+    );
+  });
 });

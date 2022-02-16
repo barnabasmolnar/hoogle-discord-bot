@@ -1,4 +1,4 @@
-import * as yup from "https://esm.sh/yup";
+import { yup } from "./deps.ts";
 import { hoogleSchema, validateSchema } from "./validation.ts";
 
 const noValidation = yup

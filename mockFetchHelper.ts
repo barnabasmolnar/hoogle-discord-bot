@@ -1,4 +1,4 @@
-import { mockFetch } from "https://deno.land/x/metch/mod.ts";
+import { mockFetch } from "./deps.ts";
 
 export const mockFetchHelper = async (
   requestURL: string,

@@ -1,7 +1,5 @@
-import { json } from "https://deno.land/x/sift@0.4.3/mod.ts";
+import { DOMParser, json, yup } from "./deps.ts";
 import { getHoogleJSON } from "./api.ts";
-import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
-import * as yup from "https://esm.sh/yup";
 import { cleanText } from "./utils.ts";
 
 export const ERROR_MSG = {

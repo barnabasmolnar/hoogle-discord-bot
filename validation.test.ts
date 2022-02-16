@@ -1,9 +1,4 @@
-import * as yup from "https://esm.sh/yup";
-import {
-  assertEquals,
-  assertNotEquals,
-  assertRejects,
-} from "https://deno.land/std/testing/asserts.ts";
+import { assertEquals, assertNotEquals, assertRejects, yup } from "./deps.ts";
 import {
   mapResults,
   mapResultsStripped,

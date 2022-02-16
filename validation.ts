@@ -1,4 +1,4 @@
-import * as yup from "https://esm.sh/yup";
+import { yup } from "./deps.ts";
 
 export const itemSchema = yup.object().shape({
   docs: yup.string().ensure(),

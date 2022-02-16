@@ -1,9 +1,4 @@
-import { unMockFetch } from "https://deno.land/x/metch/mod.ts";
-import {
-  assertEquals,
-  assertRejects,
-} from "https://deno.land/std/testing/asserts.ts";
-import * as yup from "https://esm.sh/yup";
+import { assertEquals, assertRejects, unMockFetch, yup } from "./deps.ts";
 import { getHoogleJSON, hoogleAPI, requestJSON } from "./api.ts";
 import { mapResults, mapResultsStripped } from "./mockData.ts";
 import { mockFetchHelper } from "./mockFetchHelper.ts";

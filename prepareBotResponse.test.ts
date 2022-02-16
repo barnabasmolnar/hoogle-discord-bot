@@ -1,5 +1,4 @@
-import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
-import { unMockFetch } from "https://deno.land/x/metch/mod.ts";
+import { assertEquals, unMockFetch } from "./deps.ts";
 import { ERROR_MSG, prepareBotResponse } from "./prepareBotResponse.ts";
 import { mockFetchHelper } from "./mockFetchHelper.ts";
 
